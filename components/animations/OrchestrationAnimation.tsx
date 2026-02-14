@@ -109,10 +109,10 @@ export default function OrchestrationAnimation({ step = 0 }: OrchestrationAnimat
       {/* Title */}
       <motion.text
         x={400}
-        y={35}
+        y={45}
         textAnchor="middle"
         fill="white"
-        fontSize={20}
+        fontSize={22}
         fontWeight="bold"
         fontFamily="system-ui, sans-serif"
         initial={{ opacity: 0 }}
@@ -120,40 +120,6 @@ export default function OrchestrationAnimation({ step = 0 }: OrchestrationAnimat
       >
         Container Orchestration
       </motion.text>
-
-      {/* Step indicator */}
-      <motion.g>
-        {["Why Orchestration?", "Docker Swarm", "Scaling", "Kubernetes"].map((label, i) => (
-          <motion.g key={label}>
-            <motion.rect
-              x={95 + i * 170}
-              y={52}
-              width={130}
-              height={24}
-              rx={12}
-              fill={i === step ? "#2496ED" : "#1e293b"}
-              stroke={i <= step ? "#2496ED" : "#334155"}
-              strokeWidth={1}
-              animate={{
-                fill: i === step ? "#2496ED" : "#1e293b",
-                stroke: i <= step ? "#2496ED" : "#334155",
-              }}
-              transition={{ duration: 0.3 }}
-            />
-            <motion.text
-              x={160 + i * 170}
-              y={68}
-              textAnchor="middle"
-              fill={i <= step ? "white" : "#64748b"}
-              fontSize={10}
-              fontFamily="monospace"
-              animate={{ fill: i <= step ? "white" : "#64748b" }}
-            >
-              {label}
-            </motion.text>
-          </motion.g>
-        ))}
-      </motion.g>
 
       {/* Step 0: Why Orchestration? */}
       <AnimatePresence>
@@ -208,14 +174,10 @@ export default function OrchestrationAnimation({ step = 0 }: OrchestrationAnimat
                 Single Host
               </motion.text>
 
-              {/* Server icon */}
-              <motion.rect x={370} y={138} width={8} height={8} rx={1} fill="#64748b" />
-              <motion.rect x={380} y={138} width={8} height={8} rx={1} fill="#64748b" />
-
               {/* Three containers */}
-              <MiniContainer x={230} y={175} color="#2496ED" delay={0.4} label="app-1" />
-              <MiniContainer x={330} y={175} color="#2496ED" delay={0.5} crashed label="app-2" />
-              <MiniContainer x={430} y={175} color="#2496ED" delay={0.6} label="app-3" />
+              <MiniContainer x={220} y={175} color="#2496ED" delay={0.4} label="app-1" />
+              <MiniContainer x={300} y={175} color="#2496ED" delay={0.5} crashed label="app-2" />
+              <MiniContainer x={380} y={175} color="#2496ED" delay={0.6} label="app-3" />
 
               {/* Warning icon on crashed container */}
               <motion.g
@@ -224,7 +186,7 @@ export default function OrchestrationAnimation({ step = 0 }: OrchestrationAnimat
                 transition={{ ...springTransition, delay: 1.0 }}
               >
                 <motion.circle
-                  cx={355}
+                  cx={325}
                   cy={172}
                   r={10}
                   fill="#ef4444"
@@ -232,7 +194,7 @@ export default function OrchestrationAnimation({ step = 0 }: OrchestrationAnimat
                   transition={{ duration: 1, repeat: Infinity }}
                 />
                 <motion.text
-                  x={355}
+                  x={325}
                   y={177}
                   textAnchor="middle"
                   fill="white"
@@ -246,7 +208,7 @@ export default function OrchestrationAnimation({ step = 0 }: OrchestrationAnimat
 
               {/* Crash label */}
               <motion.text
-                x={355}
+                x={325}
                 y={240}
                 textAnchor="middle"
                 fill="#ef4444"

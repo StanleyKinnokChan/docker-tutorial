@@ -202,8 +202,8 @@ export default function VolumesAnimation({ step = 0 }: VolumesAnimationProps) {
             {/* Red X marks when data disappears */}
             <motion.g
               initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0, 1, 1, 0] }}
-              transition={{ duration: 6, times: [0, 0.35, 0.45, 0.6, 0.65], repeat: Infinity }}
+              animate={{ opacity: [0, 0, 0, 1, 1] }}
+              transition={{ duration: 6, times: [0, 0.3, 0.45, 0.5, 1], repeat: Infinity }}
             >
               <motion.text
                 x={280}
@@ -232,8 +232,8 @@ export default function VolumesAnimation({ step = 0 }: VolumesAnimationProps) {
             {/* docker rm command */}
             <motion.g
               initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0, 1, 1, 0] }}
-              transition={{ duration: 6, times: [0, 0.25, 0.32, 0.5, 0.55], repeat: Infinity }}
+              animate={{ opacity: [0, 0, 0, 1, 1] }}
+              transition={{ duration: 6, times: [0, 0.3, 0.4, 0.45, 1], repeat: Infinity }}
             >
               <motion.rect x={180} y={260} width={200} height={28} rx={4} fill="#1e293b" stroke="#475569" strokeWidth={1} />
               <motion.text x={190} y={279} fill="#ef4444" fontSize={11} fontFamily="monospace">
@@ -813,9 +813,9 @@ export default function VolumesAnimation({ step = 0 }: VolumesAnimationProps) {
 
             {/* Mount points inside container */}
             {[
-              { path: "/data", x: 280, color: "#2496ED" },
-              { path: "/app", x: 380, color: "#22c55e" },
-              { path: "/tmp", x: 480, color: "#94a3b8" },
+              { path: "/data", x: 310, color: "#2496ED" },
+              { path: "/app", x: 400, color: "#22c55e" },
+              { path: "/tmp", x: 490, color: "#94a3b8" },
             ].map((mount, i) => (
               <motion.g
                 key={mount.path}
@@ -848,17 +848,17 @@ export default function VolumesAnimation({ step = 0 }: VolumesAnimationProps) {
               </motion.g>
             ))}
 
-            {/* Dashed lines down to mount types */}
+            {/* Diagonal lines connecting to mount types */}
             {[
-              { x: 280, y1: 135, y2: 230, color: "#2496ED" },
-              { x: 400, y1: 135, y2: 230, color: "#22c55e" },
-              { x: 520, y1: 135, y2: 230, color: "#94a3b8" },
+              { x1: 310, y1: 132, x2: 195, y2: 265, color: "#2496ED" }, // to Named Volume
+              { x1: 400, y1: 132, x2: 400, y2: 240, color: "#22c55e" }, // to Bind Mount
+              { x1: 490, y1: 132, x2: 615, y2: 240, color: "#94a3b8" }, // to tmpfs
             ].map((line, i) => (
               <motion.line
                 key={i}
-                x1={line.x}
+                x1={line.x1}
                 y1={line.y1}
-                x2={line.x}
+                x2={line.x2}
                 y2={line.y2}
                 stroke={line.color}
                 strokeWidth={2}
@@ -908,17 +908,6 @@ export default function VolumesAnimation({ step = 0 }: VolumesAnimationProps) {
               <motion.text x={160} y={378} textAnchor="middle" fill="#2496ED" fontSize={9} fontWeight="bold" fontFamily="system-ui, sans-serif">
                 Database
               </motion.text>
-              {/* Connect to container */}
-              <motion.path
-                d="M 195 265 L 250 180"
-                stroke="#2496ED"
-                strokeWidth={1.5}
-                strokeDasharray="4 3"
-                fill="none"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 0.5, delay: 0.9 }}
-              />
             </motion.g>
 
             {/* 2. Bind Mount (green folder) */}
@@ -1015,17 +1004,6 @@ export default function VolumesAnimation({ step = 0 }: VolumesAnimationProps) {
               <motion.text x={640} y={378} textAnchor="middle" fill="#94a3b8" fontSize={9} fontWeight="bold" fontFamily="system-ui, sans-serif">
                 Temp/Secrets
               </motion.text>
-              {/* Connect to container */}
-              <motion.path
-                d="M 625 260 L 550 180"
-                stroke="#94a3b8"
-                strokeWidth={1.5}
-                strokeDasharray="4 3"
-                fill="none"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 0.5, delay: 1.3 }}
-              />
             </motion.g>
 
             {/* Label */}

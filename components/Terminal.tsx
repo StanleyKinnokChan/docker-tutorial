@@ -174,7 +174,6 @@ export default function Terminal({
               onKeyDown={handleKeyDown}
               className="w-full bg-transparent text-white outline-none caret-transparent font-mono text-sm"
               spellCheck={false}
-              autoFocus
             />
             {/* Blinking cursor */}
             <span

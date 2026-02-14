@@ -78,7 +78,15 @@ export default function RootLayout({
                 Next.js, Tailwind CSS &amp; Framer Motion.
               </p>
               <p className="text-text-muted text-sm">
-                Learn Docker visually, one animation at a time.
+                Built by{" "}
+                <a
+                  href="https://www.linkedin.com/in/staneykinnok-chan/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-docker-blue hover:text-docker-light-blue font-medium transition-colors"
+                >
+                  Stanley Chan
+                </a>
               </p>
             </div>
           </div>

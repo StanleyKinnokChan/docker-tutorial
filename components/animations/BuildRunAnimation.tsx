@@ -146,8 +146,8 @@ function ProgressBar({ x, y, width, delay }: { x: number; y: number; width: numb
         x={x}
         y={y}
         width={width}
-        height={8}
-        rx={4}
+        height={10}
+        rx={5}
         fill="#1e293b"
         stroke="#334155"
         strokeWidth={1}
@@ -159,25 +159,66 @@ function ProgressBar({ x, y, width, delay }: { x: number; y: number; width: numb
         x={x + 1}
         y={y + 1}
         width={0}
-        height={6}
-        rx={3}
+        height={8}
+        rx={4}
         fill="#2496ED"
-        animate={{ width: width - 2 }}
-        transition={{ delay: delay + 0.2, duration: 1.5, ease: "easeInOut" }}
+        animate={{ 
+          width: [0, width - 2, width - 2, 0, 0],
+          fill: ["#2496ED", "#2496ED", "#22c55e", "#22c55e", "#2496ED"]
+        }}
+        transition={{ 
+          delay: delay + 0.2, 
+          duration: 6, 
+          times: [0, 0.4, 0.75, 0.95, 1],
+          ease: "easeInOut",
+          repeat: Infinity,
+        }}
       />
-      <motion.text
-        x={x + width / 2}
-        y={y + 22}
-        textAnchor="middle"
-        fill="#2496ED"
-        fontSize={10}
-        fontFamily="monospace"
+      <motion.g
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: delay + 0.5 }}
       >
-        Building...
-      </motion.text>
+        <motion.text
+          x={x + width / 2}
+          y={y + 28}
+          textAnchor="middle"
+          fontSize={11}
+          fontWeight="bold"
+          fontFamily="monospace"
+          animate={{ 
+            fill: ["#2496ED", "#2496ED", "#2496ED", "#2496ED", "#2496ED"],
+            opacity: [1, 1, 0, 0, 1]
+          }}
+          transition={{ 
+            duration: 6, 
+            times: [0, 0.35, 0.4, 0.95, 1],
+            repeat: Infinity,
+          }}
+        >
+          Building...
+        </motion.text>
+        <motion.text
+          x={x + width / 2}
+          y={y + 28}
+          textAnchor="middle"
+          fontSize={11}
+          fontWeight="bold"
+          fontFamily="monospace"
+          fill="#22c55e"
+          initial={{ opacity: 0 }}
+          animate={{ 
+            opacity: [0, 0, 1, 0]
+          }}
+          transition={{ 
+            duration: 6, 
+            times: [0, 0.74, 0.75, 0.95],
+            repeat: Infinity,
+          }}
+        >
+          DONE!
+        </motion.text>
+      </motion.g>
     </motion.g>
   );
 }
@@ -200,10 +241,10 @@ export default function BuildRunAnimation({ step = 0 }: BuildRunAnimationProps) 
       {/* Title */}
       <motion.text
         x={400}
-        y={35}
+        y={45}
         textAnchor="middle"
         fill="white"
-        fontSize={20}
+        fontSize={22}
         fontWeight="bold"
         fontFamily="system-ui, sans-serif"
         initial={{ opacity: 0 }}
@@ -211,40 +252,6 @@ export default function BuildRunAnimation({ step = 0 }: BuildRunAnimationProps) 
       >
         Docker Build &amp; Run
       </motion.text>
-
-      {/* Step indicator */}
-      <motion.g>
-        {["docker build", "Build Cache", "docker run", "Port Mapping"].map((label, i) => (
-          <motion.g key={label}>
-            <motion.rect
-              x={95 + i * 170}
-              y={52}
-              width={130}
-              height={24}
-              rx={12}
-              fill={i === step ? "#2496ED" : "#1e293b"}
-              stroke={i <= step ? "#2496ED" : "#334155"}
-              strokeWidth={1}
-              animate={{
-                fill: i === step ? "#2496ED" : "#1e293b",
-                stroke: i <= step ? "#2496ED" : "#334155",
-              }}
-              transition={{ duration: 0.3 }}
-            />
-            <motion.text
-              x={160 + i * 170}
-              y={68}
-              textAnchor="middle"
-              fill={i <= step ? "white" : "#64748b"}
-              fontSize={10}
-              fontFamily="monospace"
-              animate={{ fill: i <= step ? "white" : "#64748b" }}
-            >
-              {label}
-            </motion.text>
-          </motion.g>
-        ))}
-      </motion.g>
 
       {/* Step 0: docker build */}
       <AnimatePresence>
@@ -261,9 +268,9 @@ export default function BuildRunAnimation({ step = 0 }: BuildRunAnimationProps) 
               $ docker build -t my-app .
             </motion.text>
 
-            <DockerfileIcon x={100} y={180} delay={0.2} />
-            <AnimatedArrow x1={190} y1={225} x2={340} y2={225} delay={0.5} />
-            <ProgressBar x={300} y={300} width={200} delay={0.8} />
+            <DockerfileIcon x={160} y={180} delay={0.2} />
+            <AnimatedArrow x1={235} y1={225} x2={545} y2={225} delay={0.5} />
+            <ProgressBar x={280} y={300} width={240} delay={0.8} />
             <ImageIcon x={560} y={190} delay={1.5} label="my-app:latest" />
 
             {/* Assembling animation */}
@@ -389,19 +396,6 @@ export default function BuildRunAnimation({ step = 0 }: BuildRunAnimationProps) 
                     </motion.g>
                   ) : (
                     <motion.g>
-                      {/* Spinner */}
-                      <motion.circle
-                        cx={580}
-                        cy={y + 20}
-                        r={10}
-                        fill="none"
-                        stroke="#2496ED"
-                        strokeWidth={2}
-                        strokeDasharray="20 40"
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                        style={{ originX: "580px", originY: `${y + 20}px` }}
-                      />
                       <motion.text
                         x={620}
                         y={y + 24}

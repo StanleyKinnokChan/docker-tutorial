@@ -342,23 +342,12 @@ export default function MultiStageAnimation({ step = 0 }: MultiStageAnimationPro
                 />
               ))}
 
-              {/* Gear icon spinning - compile step */}
+              {/* Compile step indicator */}
               <motion.g
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
               >
-                <motion.text
-                  x={80}
-                  y={257}
-                  fill="#f97316"
-                  fontSize={16}
-                  animate={{ rotate: [0, 360] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                  style={{ originX: "80px", originY: "250px" }}
-                >
-                  ⚙
-                </motion.text>
                 <motion.text x={100} y={257} fill="#f97316" fontSize={10} fontFamily="monospace">
                   npm run build
                 </motion.text>

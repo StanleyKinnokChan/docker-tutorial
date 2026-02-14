@@ -29,10 +29,10 @@ export default function ProductionAnimation({ step = 0 }: ProductionAnimationPro
       {/* Title */}
       <motion.text
         x={400}
-        y={35}
+        y={45}
         textAnchor="middle"
         fill="white"
-        fontSize={20}
+        fontSize={22}
         fontWeight="bold"
         fontFamily="system-ui, sans-serif"
         initial={{ opacity: 0 }}
@@ -40,40 +40,6 @@ export default function ProductionAnimation({ step = 0 }: ProductionAnimationPro
       >
         Docker in Production
       </motion.text>
-
-      {/* Step indicator */}
-      <motion.g>
-        {["Health Checks", "Resource Limits", "Logging", "Security"].map((label, i) => (
-          <motion.g key={label}>
-            <motion.rect
-              x={95 + i * 170}
-              y={52}
-              width={130}
-              height={24}
-              rx={12}
-              fill={i === step ? "#2496ED" : "#1e293b"}
-              stroke={i <= step ? "#2496ED" : "#334155"}
-              strokeWidth={1}
-              animate={{
-                fill: i === step ? "#2496ED" : "#1e293b",
-                stroke: i <= step ? "#2496ED" : "#334155",
-              }}
-              transition={{ duration: 0.3 }}
-            />
-            <motion.text
-              x={160 + i * 170}
-              y={68}
-              textAnchor="middle"
-              fill={i <= step ? "white" : "#64748b"}
-              fontSize={10}
-              fontFamily="monospace"
-              animate={{ fill: i <= step ? "white" : "#64748b" }}
-            >
-              {label}
-            </motion.text>
-          </motion.g>
-        ))}
-      </motion.g>
 
       {/* Step 0: Health Checks */}
       <AnimatePresence>
@@ -1025,17 +991,22 @@ export default function ProductionAnimation({ step = 0 }: ProductionAnimationPro
                 Use external secrets manager
               </motion.text>
 
-              {/* Key icon moving from container to vault */}
+              {/* Key icon moving within the "3. No secrets" box area, left of the vault */}
               <motion.g
-                animate={{
-                  x: [0, 400],
-                  opacity: [1, 1, 1],
-                }}
-                transition={{ delay: 3.3, duration: 0.8, ease: "easeInOut" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 3.3 }}
               >
-                {/* Key shape */}
-                <motion.circle cx={200} cy={300} r={5} fill="#f59e0b" fillOpacity={0.6} stroke="#f59e0b" strokeWidth={1} />
-                <motion.path d="M 205 300 L 218 300 M 213 297 L 213 303 M 216 297 L 216 303" stroke="#f59e0b" strokeWidth={1.5} />
+                <motion.g
+                  animate={{
+                    x: [445, 455, 445],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  {/* Key shape positioned to the left of the Vault (which is at x=690) */}
+                  <motion.circle cx={200} cy={305} r={5} fill="#f59e0b" fillOpacity={0.6} stroke="#f59e0b" strokeWidth={1} />
+                  <motion.path d="M 205 305 L 218 305 M 213 302 L 213 308 M 216 302 L 216 308" stroke="#f59e0b" strokeWidth={1.5} />
+                </motion.g>
               </motion.g>
 
               {/* Vault box */}

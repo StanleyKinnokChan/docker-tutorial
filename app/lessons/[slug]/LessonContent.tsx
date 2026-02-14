@@ -57,7 +57,8 @@ export default function LessonContent({ lesson }: LessonContentProps) {
   const step = lesson.steps[currentStep];
 
   useEffect(() => {
-    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Scroll handling removed to prevent page jumping on step changes
+    // topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [currentStep]);
 
   const terminalCommands = useMemo(() => {
