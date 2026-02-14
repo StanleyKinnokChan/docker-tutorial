@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0f172a;
+  --foreground: #e2e8f0;
+  --docker-blue: #2496ED;
+  --docker-light-blue: #0db7ed;
+  --nav-bg: #0c1322;
+  --sidebar-bg: #111827;
+  --card-bg: #1e293b;
+  --border-color: #1e293b;
+  --text-muted: #94a3b8;
+  --terminal-bg: #0d1117;
+  --terminal-green: #4ade80;
+  --terminal-yellow: #fbbf24;
+  --terminal-red: #f87171;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-docker-blue: var(--docker-blue);
+  --color-docker-light-blue: var(--docker-light-blue);
+  --color-nav-bg: var(--nav-bg);
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-card-bg: var(--card-bg);
+  --color-border-color: var(--border-color);
+  --color-text-muted: var(--text-muted);
+  --color-terminal-bg: var(--terminal-bg);
+  --color-terminal-green: var(--terminal-green);
+  --color-terminal-yellow: var(--terminal-yellow);
+  --color-terminal-red: var(--terminal-red);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--docker-blue);
+}
+
+/* Terminal styling */
+.terminal {
+  background: var(--terminal-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminal-dot-red {
+  background: var(--terminal-red);
+}
+
+.terminal-dot-yellow {
+  background: var(--terminal-yellow);
+}
+
+.terminal-dot-green {
+  background: var(--terminal-green);
+}
+
+.terminal-body {
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.terminal-prompt::before {
+  content: "$ ";
+  color: var(--terminal-green);
+  font-weight: 600;
+}
+
+.terminal-output {
+  color: var(--text-muted);
+}
+
+/* Selection color */
+::selection {
+  background: rgba(36, 150, 237, 0.3);
+  color: #ffffff;
+}
