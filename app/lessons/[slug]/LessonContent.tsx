@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import type { Lesson } from "@/lib/lessons";
@@ -52,13 +52,11 @@ function getAnimationComponent(animation: string, step: number) {
 
 export default function LessonContent({ lesson }: LessonContentProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const topRef = useRef<HTMLDivElement>(null);
   const lessonIndex = getLessonIndex(lesson.slug);
   const step = lesson.steps[currentStep];
 
   useEffect(() => {
-    // Scroll handling removed to prevent page jumping on step changes
-    // topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentStep]);
 
   const terminalCommands = useMemo(() => {
@@ -75,9 +73,6 @@ export default function LessonContent({ lesson }: LessonContentProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      {/* Scroll anchor */}
-      <div ref={topRef} />
-
       {/* Lesson header */}
       <div className="mb-8">
         <span className="inline-block text-xs font-semibold uppercase tracking-wider text-docker-blue mb-2">

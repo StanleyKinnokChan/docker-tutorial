@@ -554,7 +554,7 @@ export default function ProductionAnimation({ step = 0 }: ProductionAnimationPro
             >
               <motion.rect x={310} y={155} width={140} height={70} rx={8} fill="#1e293b" stroke="#475569" strokeWidth={2} />
               {/* Gear icon */}
-              <motion.circle cx={380} y={178} r={10} fill="none" stroke="#94a3b8" strokeWidth={1.5}
+              <motion.circle cx={380} cy={178} r={10} fill="none" stroke="#94a3b8" strokeWidth={1.5}
                 animate={{ rotate: 360 }}
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
                 style={{ transformOrigin: "380px 178px" }}
