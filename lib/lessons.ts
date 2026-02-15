@@ -295,42 +295,29 @@ COPY . .</code></pre>
       },
       {
         title: "CMD & EXPOSE",
-        content: `<p>The <code>EXPOSE</code> instruction documents which port the container listens on at runtime. It doesn\u2019t actually publish the port\u2014that happens when you run the container with <code>-p</code>\u2014but it serves as documentation and is used by some tools.</p>
+        content: `<p>The final lines of our Dockerfile tell Docker how the container communicates with the outside world and what command to run at startup.</p>
+
+<p><code>EXPOSE</code> documents which port your app listens on. It doesn\u2019t actually publish the port\u2014that happens at runtime with <code>-p</code>\u2014but it serves as built-in documentation for anyone reading the Dockerfile.</p>
 <pre><code>EXPOSE 3000</code></pre>
 
-<h4>CMD \u2014 The Default Command</h4>
-<p>The <code>CMD</code> instruction defines the <strong>default command</strong> that runs when a container starts. There can only be one <code>CMD</code> in a Dockerfile; if you specify multiple, only the last one takes effect. CMD has two forms:</p>
-<ul>
-<li><strong>Exec form (preferred):</strong> <code>CMD ["node", "server.js"]</code> \u2014 Runs the process directly as PID 1 without a shell wrapper. This is critical because it means the process receives Unix signals (like <code>SIGTERM</code>) directly, allowing it to shut down gracefully.</li>
-<li><strong>Shell form:</strong> <code>CMD node server.js</code> \u2014 Runs through <code>/bin/sh -c</code>, which spawns a shell as PID 1 and your process as a child. The shell may not forward signals to your process, meaning <code>docker stop</code> could force-kill your app after a timeout instead of shutting it down cleanly.</li>
-</ul>
-<p>Always use exec form in production Dockerfiles to ensure proper signal handling and graceful shutdown.</p>
+<p><code>CMD</code> defines the <strong>default command</strong> that runs when a container starts. Only the last <code>CMD</code> in a Dockerfile takes effect. Always use the <strong>exec form</strong> (JSON array) in production:</p>
+<pre><code>CMD ["node", "server.js"]</code></pre>
+<p>The exec form runs the process directly as PID 1, so it receives signals like <code>SIGTERM</code> and can shut down gracefully. The shell form (<code>CMD node server.js</code>) wraps your process in <code>/bin/sh</code>, which may not forward signals properly.</p>
 
-<h4>ENTRYPOINT \u2014 The Fixed Executable</h4>
-<p><code>ENTRYPOINT</code> configures the container to run as an executable. While <code>CMD</code> defines a default command that can be <em>entirely overridden</em> at runtime, <code>ENTRYPOINT</code> sets a <strong>fixed executable</strong> that always runs. When both are used together, <code>CMD</code> provides <strong>default arguments</strong> to the entrypoint that can be overridden.</p>
+<p><code>ENTRYPOINT</code> sets a <strong>fixed executable</strong> that always runs. When paired with <code>CMD</code>, the entrypoint stays fixed while <code>CMD</code> provides default arguments that can be overridden:</p>
 <pre><code>ENTRYPOINT ["node"]
 CMD ["server.js"]</code></pre>
-<p>With this combination pattern, <code>ENTRYPOINT</code> is the executable (<code>node</code>) and <code>CMD</code> provides the default argument (<code>server.js</code>) that can be overridden at runtime:</p>
-<ul>
-<li><code>docker run myapp</code> \u2192 runs <code>node server.js</code> (the default)</li>
-<li><code>docker run myapp worker.js</code> \u2192 runs <code>node worker.js</code> (CMD is overridden, ENTRYPOINT stays)</li>
-</ul>
-<p>Compare this to using <code>CMD</code> alone:</p>
-<ul>
-<li><code>CMD ["node", "server.js"]</code> \u2192 <code>docker run myapp bash</code> would replace the <em>entire</em> command with <code>bash</code></li>
-</ul>
-<p>You can still override the entrypoint with <code>--entrypoint</code>, but it requires an explicit flag: <code>docker run --entrypoint sh myapp</code> drops you into a shell, bypassing the node executable entirely. This is useful for debugging.</p>
+<p>With this pattern, <code>docker run myapp</code> runs <code>node server.js</code>, while <code>docker run myapp worker.js</code> runs <code>node worker.js</code>\u2014the entrypoint stays, only the argument changes. To bypass the entrypoint entirely, use <code>docker run --entrypoint sh myapp</code>.</p>
 
 <table style="width:100%;border-collapse:collapse;margin:16px 0;">
 <tr style="border-bottom:1px solid #334155;"><th style="text-align:left;padding:8px;color:#2496ED;">Feature</th><th style="text-align:left;padding:8px;color:#2496ED;">CMD</th><th style="text-align:left;padding:8px;color:#2496ED;">ENTRYPOINT</th></tr>
 <tr style="border-bottom:1px solid #1e293b;"><td style="padding:8px;">Purpose</td><td style="padding:8px;">Default command/arguments</td><td style="padding:8px;">Fixed executable</td></tr>
-<tr style="border-bottom:1px solid #1e293b;"><td style="padding:8px;">Override at runtime</td><td style="padding:8px;">Entirely replaced by args after image name</td><td style="padding:8px;">Requires <code>--entrypoint</code> flag</td></tr>
-<tr style="border-bottom:1px solid #1e293b;"><td style="padding:8px;">Used alone</td><td style="padding:8px;">Defines the full command to run</td><td style="padding:8px;">Runs executable with no default args</td></tr>
-<tr style="border-bottom:1px solid #1e293b;"><td style="padding:8px;">Used together</td><td style="padding:8px;">Provides default args to ENTRYPOINT</td><td style="padding:8px;">Receives args from CMD (or runtime override)</td></tr>
-<tr><td style="padding:8px;">Best for</td><td style="padding:8px;">Flexible containers, general images</td><td style="padding:8px;">Single-purpose containers, CLI tools</td></tr>
+<tr style="border-bottom:1px solid #1e293b;"><td style="padding:8px;">Override at runtime</td><td style="padding:8px;">Replaced by args after image name</td><td style="padding:8px;">Requires <code>--entrypoint</code> flag</td></tr>
+<tr style="border-bottom:1px solid #1e293b;"><td style="padding:8px;">Used together</td><td style="padding:8px;">Provides default args to ENTRYPOINT</td><td style="padding:8px;">Receives args from CMD or runtime</td></tr>
+<tr><td style="padding:8px;">Best for</td><td style="padding:8px;">Flexible, general-purpose images</td><td style="padding:8px;">Single-purpose containers, CLI tools</td></tr>
 </table>
 
-<p>Try the commands below to see the complete Dockerfile and how CMD and ENTRYPOINT interact at runtime.</p>`,
+<p>Try the commands below to see how CMD and ENTRYPOINT interact at runtime.</p>`,
         animation: "dockerfile",
         terminalCommands: {
           "cat Dockerfile": {
